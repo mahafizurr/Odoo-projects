@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_farm_advisory_root" name="Farmer Advisory" sequence="10"/>
+
+        <menuitem id="menu_farm_visits" name="Visits" parent="menu_farm_advisory_root" action="action_farm_visit" sequence="10"/>
+        
+        <menuitem id="menu_farm_advisory_config" name="Configuration" parent="menu_farm_advisory_root" sequence="100"/>
+        <menuitem id="menu_farm_farmer" name="Farmers" parent="menu_farm_advisory_config" action="action_farm_farmer" sequence="10"/>
+        <menuitem id="menu_farm_field" name="Fields" parent="menu_farm_advisory_config" action="action_farm_field" sequence="20"/>
+    </data>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_farm_field_form" model="ir.ui.view">
+            <field name="name">farm.field.form</field>
+            <field name="model">farm.field</field>
+            <field name="arch" type="xml">
+                <form string="Field">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="farmer_id"/>
+                            <field name="location"/>
+                            <field name="size"/>
+                            <field name="current_crop"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_farm_field_tree" model="ir.ui.view">
+            <field name="name">farm.field.tree</field>
+            <field name="model">farm.field</field>
+            <field name="arch" type="xml">
+                <tree string="Fields">
+                    <field name="name"/>
+                    <field name="farmer_id"/>
+                    <field name="current_crop"/>
+                    <field name="size"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_farm_field" model="ir.actions.act_window">
+            <field name="name">Fields</field>
+            <field name="res_model">farm.field</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

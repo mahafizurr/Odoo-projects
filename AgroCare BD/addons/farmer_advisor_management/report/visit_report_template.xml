@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_visit_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Farmer Visit Report</h2>
+                        <p><strong>Report ID:</strong> <span t-field="doc.name"/></p>
+                        
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Farmer:</strong> <span t-field="doc.farmer_id.name"/><br/>
+                                <strong>Phone:</strong> <span t-field="doc.farmer_id.phone"/><br/>
+                                <strong>Address:</strong> <span t-field="doc.farmer_id.address"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Visit Date:</strong> <span t-field="doc.visit_date" t-options='{"widget": "datetime"}'/><br/>
+                                <strong>Assigned To:</strong> <span t-field="doc.assigned_to_id.name"/><br/>
+                                <strong>Field:</strong> <span t-field="doc.field_id.name"/>
+                            </div>
+                        </div>
+
+                        <h3>Identified Problems and Recommendations</h3>
+                        
+                        <t t-foreach="doc.problem_ids" t-as="problem">
+                            <div style="margin-top: 20px; border-top: 1px solid #dee2e6; padding-top: 10px;">
+                                <h4>Problem: <span t-field="problem.description"/></h4>
+                                <p>
+                                    <strong>Type:</strong> <span t-field="problem.problem_type"/> | 
+                                    <strong>Severity:</strong> <span t-field="problem.severity_level"/>
+                                </p>
+                                
+                                <t t-if="problem.problem_images_ids">
+                                    <h5>Images:</h5>
+                                    <t t-foreach="problem.problem_images_ids" t-as="img">
+                                        <img t-att-src="image_data_uri(img.datas)" style="max-height: 150px; margin: 5px;"/>
+                                    </t>
+                                </t>
+
+                                <h5 class="mt-2">Recommendations:</h5>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Recommendation</th>
+                                            <th>Suggested Product</th>
+                                            <th>Follow-up Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="problem.recommendation_ids" t-as="rec">
+                                            <td><span t-field="rec.recommendation_text"/></td>
+                                            <td><span t-field="rec.suggested_product_id.name"/></td>
+                                            <td><span t-field="rec.follow_up_date"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

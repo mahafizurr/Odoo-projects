@@ -1,0 +1,70 @@
+# Docker Compose file for Odoo Development Environment
+# Version: 1.0
+#
+# This setup includes three main services:
+# 1. odoo: The Odoo application itself.
+# 2. db: The PostgreSQL database required by Odoo.
+# 3. pgadmin: A web-based GUI for managing the PostgreSQL database.
+#
+# To run this:
+# 1. Save this file as 'docker-compose.yml' in your project root.
+# 2. Create the directories './addons' and './etc' in the same folder.
+# 3. Create an 'odoo.conf' file inside the './etc' directory (a basic example is provided below).
+# 4. Run 'docker-compose up -d' from your terminal in the project root.
+#
+# Access Odoo at: http://localhost:8069
+# Access PgAdmin at: http://localhost:5050
+
+version: "3.8"
+
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15
+    container_name: odoo-db
+    environment:
+      - POSTGRES_USER=odoo # Database user
+      - POSTGRES_PASSWORD=odoo # Database password
+      - POSTGRES_DB=postgres # Default database name
+    volumes:
+      - db-data:/var/lib/postgresql/data # Persists database data
+    ports:
+      - "5432:5432" # Expose postgres port for local connections if needed
+    restart: always # Ensures the database service restarts if it fails
+
+  # Odoo Application Service
+  odoo:
+    image: odoo:18.0
+    container_name: odoo-app
+    depends_on:
+      - db # Ensures the 'db' service starts before the 'odoo' service
+    ports:
+      - "8069:8069" # Odoo's default web port
+      - "8072:8072" # Live chat port (longpolling)
+    volumes:
+      # Mounts a local directory for custom addons
+      - ./addons:/mnt/extra-addons
+      # Mounts a local directory for the Odoo configuration file
+      - ./etc:/etc/odoo
+    # The command ensures Odoo starts with the specified config file.
+    # The '--dev=all' flag enables developer mode with features like the assets debugger.
+    command: -- --config=/etc/odoo/odoo.conf --dev=all
+    restart: always # Ensures the odoo service restarts if it fails
+
+  # PgAdmin Service for Database Management
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: odoo-pgadmin
+    depends_on:
+      - db # Ensures the 'db' service starts before the 'pgadmin' service
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com # Login email for PgAdmin
+      - PGADMIN_DEFAULT_PASSWORD=admin # Login password for PgAdmin
+    ports:
+      - "5050:80" # Maps the container's port 80 to the host's port 5050
+    restart: always # Ensures the pgadmin service restarts if it fails
+
+# Named volume for persisting PostgreSQL data
+volumes:
+  db-data:
+    driver: local

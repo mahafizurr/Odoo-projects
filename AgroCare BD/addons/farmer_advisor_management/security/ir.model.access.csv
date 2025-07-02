@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_farm_farmer,farm.farmer.access,model_farm_farmer,base.group_user,1,1,1,1
+access_farm_field,farm.field.access,model_farm_field,base.group_user,1,1,1,1
+access_farm_visit,farm.visit.access,model_farm_visit,base.group_user,1,1,1,1
+access_farm_problem,farm.problem.access,model_farm_problem,base.group_user,1,1,1,1
+access_farm_recommendation,farm.recommendation.access,model_farm_recommendation,base.group_user,1,1,1,1
